@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Предпросмотр групп</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='result_style.css') }}">
+</head>
+<body>
+<main>
+    <h1>Предпросмотр групп</h1>
+
+    <div class="results">
+        <h3>Предпросмотр групп</h3>
+        <pre>{{ group_preview }}</pre>
+
+        <form action="/download" method="post" class="output-form">
+            <input type="hidden" name="group_preview" value="{{ group_preview }}">
+            <div>
+                <button type="submit">Скачать в CSV</button>
+            </div>
+        </form>
+    </div>
+
+</main>
+</body>
+</html>
