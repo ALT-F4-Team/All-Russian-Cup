@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, send_file, url_for, jsonify
+from flask import Flask, render_template, request, send_file
 from werkzeug.utils import secure_filename
 import pandas as pd
 import os
+import json
 
 app = Flask(__name__)
 
@@ -9,9 +10,11 @@ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'csv'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+
 @app.route('/')
 def index():
     return render_template('index.html', title='Улучшение представлений результатов “Мой голос”')
+
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -30,16 +33,31 @@ def upload():
 
         df = pd.read_csv(file_path)
 
-        # Группировка по названиям колонок
-        grouped_data = df.groupby(df.columns.tolist()).size().reset_index(name='Count')
-        group_data_dict = grouped_data.to_dict(orient='records')
+        preview = []
 
-        return render_template('result.html', group_data=group_data_dict)
+        for group in set(df.group):
+            preview.append([group] + list(df[df.group == group].text[:3]))
+
+        df = df.to_json()
+
+        return render_template('result.html', preview=preview, df=df)
 
     return "File format not allowed. Please upload a CSV file."
 
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route('/download', methods=['GET', 'POST'])
+def download():
+    df = json.loads(request.form['results'])
+    df = pd.DataFrame(data=df)
+    filename = 'uploads/output.csv'
+
+    df.to_csv(filename, index=False)
+    return send_file(filename, as_attachment=True)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

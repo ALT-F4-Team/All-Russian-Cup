@@ -22,39 +22,19 @@
 </head>
 <body>
     <h1>Результаты предварительного просмотра</h1>
-    <main>
-        <span class="title-upload">Демо:</span>
-        <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
-            <label for="file">Загрузить файл:</label>
-            <input type="file" id="file" name="file">
-            <button type="submit">Получить результаты</button>
-        </form>
-    </main>
     <div class="results">
         <h3>Предпросмотр групп</h3>
-        <table class="result-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Data</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in group_data %}
-                    {% for column_name, cell_value in row.items() %}
-                        {% if not column_name == 'Count' %}
-                            <tr>
-                                <td>{{ column_name }}</td>
-                                <td>{{ cell_value }}</td>
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
+        {% for group in preview %}
+            <div class="group_block">
+                <h2 class="group_title">Группа: {{ group[0] }}</h2>
+                {% for text in group[1:] %}
+                    <span>{{ text }}</span><br>
                 {% endfor %}
-            </tbody>
-        </table>
+            </div>
+        {% endfor %}
     </div>
     <form action="/download" method="post" class="output-form">
-        <input type="hidden" name="group_data" value="{{ group_data|tojson }}">
+        <input type="hidden" name="results" value="{{ df }}">
         <div>
             <button type="submit">Скачать в CSV</button>
         </div>
