@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Улучшение представлений результатов “Мой голос”</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index_style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='common_style.css') }}">
+    <meta name="viewport" content = "width=device-width, initial-scale = 1">
+</head>
+<body>
+<header>
+    <div class="header-box">
+        <span id="header-team-name">ALT+F4 Team</span>
+        <img id="header-ico" src="../static/src/ros_atom.png" alt="the icon of the caseholder"/>
+    </div>
+</header>
+<main>
+    <!-- Пустая строка -->
+    <article class="upload-form-box">
+        <span class="page-name">Демо</span>
+        <span class="page-description">Улучшение представлений результатов “Мой голос”</span>
+        <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
+            <label for="file">Загрузить файл</label>
+            <input type="file" id="file" name="file" oninput="showFileName()">
+            <button type="submit">Получить результаты</button>
+        </form>
+    </article>
+</main>
+</body>
+<script>
+    function showFileName(){
+        const file = document.getElementById("file").files[0];
+        let htmlToInsert = "Загрузить файл";
+        if(file !== undefined) {
+            htmlToInsert = `Файл <b id="filename">${file.name}</b> загружен`;
+        }
+        document.querySelector("label[for='file']").innerHTML = htmlToInsert;
+    }
+</script>
+</html>
+
