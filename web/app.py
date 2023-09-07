@@ -59,5 +59,13 @@ def download():
     return send_file(filename, as_attachment=True)
 
 
+@app.route('/visualization', methods=['GET', 'POST'])
+def visualization():
+    df = json.loads(request.form['graphics'])
+    df = pd.DataFrame(data=df).groupby('group').count().reset_index()
+
+    return render_template('charts.html', labels=list(df['group']), data=list(df['text']))
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
