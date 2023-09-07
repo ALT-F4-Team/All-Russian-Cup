@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .chart-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .chart {
+            width: 1280px;
+            height: 1080px;
+            margin: 10px;
+        }
+
+        .doughnut-chart {
+            width: 640px;
+            height: 640px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="chart-container">
+    <div class="chart">
+        <canvas id="myChart"></canvas>
+    </div>
+    <div class="chart doughnut-chart">
+        <canvas id="myChart1"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js" ></script>
+
+<script>
+
+    // Гистограмма
+    const barChartData = {
+        labels:JSON.parse('{{ labels | tojson }}'),
+        datasets: [{
+            label: 'results',
+            data: JSON.parse('{{ data | tojson }}'),
+            hoverOffset: 4
+        }]
+    };
+
+    const ctx1 = document.getElementById('myChart').getContext('2d');
+
+    const config1 = {
+        type: 'bar',
+        data: barChartData,
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    const config2 = {
+        type: 'doughnut',
+        data: barChartData,
+        options: {
+            responsive: true
+        }
+    };
+
+    const ctx2 = document.getElementById('myChart1').getContext('2d');
+
+    new Chart(ctx2, config2);
+    new Chart(ctx1, config1);
+    console.log(barChartData)
+</script>
+</body>
+</html>
