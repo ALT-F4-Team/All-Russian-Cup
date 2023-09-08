@@ -2,37 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-        .chart-container {
-            display: flex;
-            justify-content: center;
-        }
-
-        .chart {
-            width: 1280px;
-            height: 1080px;
-            margin: 10px;
-        }
-
-        .doughnut-chart {
-            width: 640px;
-            height: 640px;
-            margin: 10px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='plots.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='common_style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale = 1">
+    <title>Plots</title>
 </head>
 <body>
-<div class="chart-container">
-    <div class="chart">
-        <canvas id="myChart"></canvas>
+<header>
+    <div class="header-box">
+        <span id="header-team-name">ALT+F4 Team</span>
+        <img id="header-ico" src="../static/src/ros_atom.png" alt="the icon of the caseholder"/>
     </div>
-    <div class="chart doughnut-chart">
-        <canvas id="myChart1"></canvas>
+</header>
+<main>
+    <div class="chart-container">
+        <div class="chart">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="chart doughnut-chart">
+            <canvas id="myChart1"></canvas>
+        </div>
     </div>
-</div>
+</main>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js" ></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 

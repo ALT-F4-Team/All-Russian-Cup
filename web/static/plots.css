@@ -1,0 +1,23 @@
+main {
+    margin: 0 auto;
+    max-width: 1800px;
+    text-align: center;
+}
+
+.chart-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.chart {
+    width: 50%;
+}
+
+@media (max-width: 1000px) {
+    .chart-container {
+        flex-direction: column;
+    }
+    .chart {
+        width: 100%;
+    }
+}

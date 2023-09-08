@@ -5,34 +5,28 @@ main {
 }
 
 .result-buttons {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin: 40px 0 20px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0 30%;
+    grid-gap: 50px;
+    margin-bottom: 50px;
 }
 
 .result-buttons button{
     border-radius: 10px;
     background: #4C38F2;
-    border: 2px #4C38F2 solid;
+    border: none;
+    width: 100%;
     color: white;
-    font-size: 26px;
+    font-size: 17px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
     cursor: pointer;
 }
 
-.result-buttons .graphics{
-    margin-right: 80px;
-    padding: 25px 120px;
-}
-.result-buttons .download-form{
-    margin-left: 80px;
-}
-.result-buttons .download-form button {
-    padding: 25px 80px;
-
+.result-buttons .graphics, .result-buttons .download-form button{
+    padding: 15px;
 }
 
 .page-title {
@@ -46,8 +40,8 @@ main {
     text-align: center;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 50px;
-    margin-top: 20px;
+    grid-gap: 50px;
+    margin: 20px 5%;
 }
 
 .results-box > div {
@@ -61,21 +55,9 @@ main {
         text-align: center;
     }
     .result-buttons {
-        flex-direction: column;
-        align-items: center;
-        padding: 0 20px;
-        box-sizing: border-box;
-    }
-    .result-buttons .graphics{
-        margin-right: 0;
-        margin-bottom: 20px;
-        padding: 25px 80px;
-    }
-    .result-buttons .download-form{
-        margin-left: 0;
-    }
-    .result-buttons .download-form button {
-        padding: 5% 20%;
+        grid-template-columns: 1fr;
+        grid-gap: 15px;
+        margin-bottom: 50px;
     }
     .results-box {
         display: flex;
@@ -89,9 +71,15 @@ main {
 
 }
 
+@media (max-width: 650px) {
+    .result-buttons {
+        margin: 0 50px;
+        margin-bottom: 50px;
+    }
+}
+
 @media (max-width: 540px){
     .result-buttons .graphics{
-        font-size:15px;
+        font-size: 18px;
     }
-
 }
