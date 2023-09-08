@@ -13,11 +13,32 @@ main {
     width: 50%;
 }
 
+.download-form{
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.download-form button {
+    border-radius: 10px;
+    border: none;
+    width: 20vw;
+    margin: 50px auto;
+    background: #4C38F2;
+    padding: 17px 40px;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+}
+
 @media (max-width: 1000px) {
     .chart-container {
         flex-direction: column;
     }
     .chart {
         width: 100%;
+    }
+    .download-form button {
+        font-size: 15px;
+        width: 250px;
     }
 }

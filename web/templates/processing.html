@@ -93,9 +93,7 @@
 
     <script type="text/javascript">
         // Redirect to the "result" page after rendering
-        setTimeout(function() {
-            window.location.href = "{{ url_for('result') }}";
-        }, 5000);
+        window.location.href = "{{ url_for('result') }}";
     </script>
 </body>
 </html>

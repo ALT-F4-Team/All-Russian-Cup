@@ -23,7 +23,12 @@
             <canvas id="myChart1"></canvas>
         </div>
     </div>
+    <form action="/download" method="post" class="download-form">
+        <input type="hidden" name="results" value="{{ df }}">
+        <button type="submit" class="graphics">Выгрузить в CSV</button>
+    </form>
 </main>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
