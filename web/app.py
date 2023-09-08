@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, redirect, url_for, session
 from werkzeug.utils import secure_filename
 import pandas as pd
 import os
 import json
-
+import time
 app = Flask(__name__)
+app.secret_key = 'a66ee1919de09f25451412411bed2fb755f845d70f96bf0a'
+
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'csv'}
@@ -39,12 +41,23 @@ def upload():
             preview.append([group] + list(df[df.group == group].text[:3]))
 
         df = df.to_json()
-
-        return render_template('result.html', preview=preview, df=df)
-
+        session['df'] = df
+        session['preview'] = preview
+        #return render_template('result.html', preview=preview, df=df)
+        return redirect(url_for('processing'))
     return "File format not allowed. Please upload a CSV file."
 
+@app.route('/processing')
+def processing():
+    # Render the "processing.html" page
 
+    return render_template('processing.html')
+
+@app.route('/result')
+def result():
+    df = session.get('df', '{}')
+    preview = session.get('preview', [])
+    return render_template('result.html', preview=preview, df=df)
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
