@@ -18,52 +18,33 @@ def download():
 
 @app.route('/', methods=['GET', 'POST'])
 def visualization():
-    df = pd.read_csv('uploads\main_v1.csv')
+    df = pd.read_csv('uploads\main_v2.csv')
     df_group = df.groupby('sentiment').count().reset_index()
-    # grouped_data = df.groupby('cluster')['2d_embeds'].apply(list).reset_index()
     grouped_data = df.groupby('cluster').agg({'2d_embeds': list, 'text': list}).reset_index()
 
-    # print(grouped_data)
+    grouped = df.groupby('cluster').count().reset_index()
 
-    # datasets = [
-    #     {
-    #         'label': 'Scatter Dataset',
-    #         'data': [
-    #             {'x': 10, 'y': 20},
-    #             {'x': 30, 'y': 40},
-    #             {'x': 50, 'y': 60},
-    #         ]
-    #     },
-    #     {
-    #         'label': 'Scatter Dataset1',
-    #         'data': [
-    #             {'x': 110, 'y': 210},
-    #             {'x': 310, 'y': 410},
-    #             {'x': 510, 'y': 610},
-    #         ]
-    #     }
-    # ]
+    mean_group_count = int(grouped['text'].sum() / len(df['cluster'].unique()))
+    group_count = len(df['cluster'].unique())
+
+    max_cluster = grouped[grouped.text == grouped.text.max()]
+    max_cluster_count = int(max_cluster['text'].iloc[0])
+    top_elemnts = list(df[df['cluster'] == max_cluster.iloc[1, 0]].text[:3])
+
     datasets = []
     for index, row in grouped_data.iterrows():
         label = row['cluster']
         xy_list = row['2d_embeds']
         text_list = row['text']
-        data=[]
-        # print(text_list)
-        # print(xy_list)
+        data = []
         for xy in zip(xy_list, text_list):
-            # print(xy)
-            # xy[0]=xy[0][1:-1]
-            # xy = xy.replace('  ', ' ')
-            # if xy[-2] == ' ':
-            #     xy=xy[:-2] + "]
             x, y = xy[0][1:-1].split()
             data.append({'x': float(x), 'y': float(y), 'text': xy[1]})
-        dataset = {'label': label,'data': data}
+        dataset = {'label': label, 'data': data}
         datasets.append(dataset)
-    print(datasets)
 
-    return render_template('charts.html', labels=list(df_group['sentiment']), data=list(df_group['text']), df=df.to_json(), datasets=datasets)
+    return render_template('charts.html', labels=list(df_group['sentiment']), data=list(df_group['text']),
+                           df=df.to_json(), datasets=datasets, mean_group_count=mean_group_count, top_elemnts=top_elemnts, group_count=group_count, max_cluster_count=max_cluster_count)
 
 
 if __name__ == '__main__':
