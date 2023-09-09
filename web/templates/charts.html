@@ -1,110 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='plots.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='common_style.css') }}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='plots.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='common_style.css') }}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Plots</title>
-  </head>
-  <body>
-    <header>
-      <div class="header-box">
+</head>
+<body>
+<header>
+    <div class="header-box">
         <span id="header-team-name">ALT+F4 Team</span>
-        <img id="header-ico" src="../static/src/ros_atom.png" alt="the icon of the caseholder" />
-      </div>
-    </header>
-    <main>
-      <div class="chart-container">
+        <img id="header-ico" src="../static/src/ros_atom.png" alt="the icon of the caseholder"/>
+    </div>
+</header>
+<main>
+    <div class="chart-container">
         <div class="chart polar-area-chart">
-          <canvas id="myChart"></canvas>
+            <canvas id="myChart"></canvas>
         </div>
         <div class="chart scatter-chart">
-          <canvas id="scatterChart"></canvas>
+            <canvas id="scatterChart"></canvas>
         </div>
-      </div>
-      <form action="/download" method="post" class="download-form">
-        <input type="hidden" name="results" value="{{ df }}" />
+        <div class="statistic">
+            <h1>Всего кластеров: {{ group_count }}</h1>
+            <h2>Среднее число элементов в кластере: {{ mean_group_count }}</h2>
+            <br>
+            <h2>Максимальный кластер содержит элементов: {{ max_cluster_count }}</h2>
+            <h2>Например</h2>
+            <div class="max-example">
+                {% for element in top_elemnts %}
+                <h3 class="group_title">{{ element }}</h3>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    </div>
+    <form action="/download" method="post" class="download-form">
+        <input type="hidden" name="results" value="{{ df }}"/>
         <button type="submit" class="graphics">Выгрузить в CSV</button>
-      </form>
-    </main>
+    </form>
+</main>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
-      // Polar Area Chart
-      const polarAreaChartData = {
-        labels: JSON.parse('{{ labels | tojson }}'),
-        datasets: [
-          {
-            label: 'results',
-            data: JSON.parse('{{ data | tojson }}'),
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.7)',
-              'rgba(54, 162, 235, 0.7)',
-              'rgba(75, 192, 192, 0.7)',
-            ],
-            hoverBackgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(75, 192, 192)'],
-            hoverOffset: 4,
-          },
-        ],
-      };
-
-      const ctx = document.getElementById('myChart').getContext('2d');
-
-      const config = {
-          type: 'doughnut',
-
-        data: polarAreaChartData,
-        options: {
-          responsive: true,
+<script>
+    // Polar Area Chart
+    const polarAreaChartData = {
+      labels: JSON.parse('{{ labels | tojson }}'),
+      datasets: [
+        {
+          label: 'results',
+          data: JSON.parse('{{ data | tojson }}'),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.7)',
+            'rgba(54, 162, 235, 0.7)',
+            'rgba(75, 192, 192, 0.7)',
+          ],
+          hoverBackgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(75, 192, 192)'],
+          hoverOffset: 4,
         },
-      };
-
-      new Chart(ctx, config);
-
-      // Scatter Chart
-      const scatterChartData = {
-          datasets: [
-                  {% for dataset in datasets %}
-                    {
-                      label: '{{ dataset.label }}',
-                      data: {{ dataset.data | tojson }},
-                    },
-                  {% endfor %}
-                ],
-      };
-
-      const scatterCtx = document.getElementById('scatterChart').getContext('2d');
-
-      const scatterConfig = {
-//        type: 'scatter',
-        type: 'bubble',
-        data: scatterChartData,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false // Скрыть легенду
-                  },
-            tooltip:{
-                    callbacks:{
-                        label:(context)=>{
-                            return context.raw.text;
-                        }
-                    }
-                }
-            }
-        },
+      ],
     };
 
-      new Chart(scatterCtx, scatterConfig);
+    const ctx = document.getElementById('myChart').getContext('2d');
 
-      // Center the scatter chart
-      const chartContainer = document.getElementsByClassName('chart-container')[0];
-      const scatterChartContainer = document.getElementsByClassName('scatter-chart')[0];
-      scatterChartContainer.style.margin = '0 auto';
+    const config = {
+        type: 'doughnut',
 
-    </script>
-  </body>
+      data: polarAreaChartData,
+      options: {
+        responsive: true,
+      },
+    };
+
+    new Chart(ctx, config);
+
+    // Scatter Chart
+    const scatterChartData = {
+        datasets: [
+                {% for dataset in datasets %}
+                  {
+                    label: '{{ dataset.label }}',
+                    data: {{ dataset.data | tojson }},
+                  },
+                {% endfor %}
+              ],
+    };
+
+    const scatterCtx = document.getElementById('scatterChart').getContext('2d');
+
+    const scatterConfig = {
+//        type: 'scatter',
+      type: 'bubble',
+      data: scatterChartData,
+      options: {
+          responsive: true,
+          plugins: {
+              legend: {
+                  display: false // Скрыть легенду
+                },
+          tooltip:{
+                  callbacks:{
+                      label:(context)=>{
+                          return context.raw.text;
+                      }
+                  }
+              }
+          }
+      },
+  };
+
+    new Chart(scatterCtx, scatterConfig);
+
+    // Center the scatter chart
+    const chartContainer = document.getElementsByClassName('chart-container')[0];
+    const scatterChartContainer = document.getElementsByClassName('scatter-chart')[0];
+    scatterChartContainer.style.margin = '0 auto';
+
+</script>
+</body>
 </html>
