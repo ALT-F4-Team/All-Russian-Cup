@@ -1,4 +1,4 @@
-<h1 align="center">Хакатон-проект: кейс - Улучшение представлений результатов в сервисе "Мой Голос", Команда ALT+F4 <div align="center"><a href="https://hacks-ai.ru/hackathons.html?eventId=969074&caseEl=981627&tab=3"><img src="https://img.shields.io/badge/hackathon--project-d513eb"></a></div></h1>
+<h1 align="center">Хакатон-проект: кейс - Улучшение представлений результатов в сервисе "Мой Голос", Команда ALT+F4 <div align="center"><a href="https://hacks-ai.ru/hackathons.html?eventId=969091&caseEl=1001711&tab=1"><img src="https://img.shields.io/badge/hackathon--project-d513eb"></a></div></h1>
 
 ## Инструкция по запуску:
 
