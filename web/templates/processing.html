@@ -92,8 +92,10 @@
     </div>
 
     <script type="text/javascript">
-        // Redirect to the "result" page after rendering
-        window.location.href = "{{ url_for('result') }}";
+        setTimeout(function() {
+            // Redirect to the "vizualization" page
+         window.location.href = "{{ url_for('visualization') }}";
+        }, 3000);
     </script>
 </body>
 </html>

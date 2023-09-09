@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 <head>
     <title>Улучшение представлений результатов “Мой голос”</title>
@@ -18,27 +17,19 @@
         </div>
     </header>
     <main>
-        <!-- Пустая строка -->
-        <article class="upload-form-box">
-            <span class="page-name">Демо</span>
-            <span class="page-description">Улучшение представлений результатов “Мой голос”</span>
-            <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
-                <label for="file">Загрузить файл</label>
-                <input type="file" id="file" name="file" oninput="showFileName()">
-                <button type="submit" onclick="loading();">Получить результаты</button>
+        <!-- Dropdown menu for selecting a question -->
+        <article class="question-select-box">
+            <span class="page-name">Выберите вопрос</span>
+            <form action="/processing" method="post" class="question-select-form">
+                <select name="question">
+                    {% for question in questions %}
+                        <option value="{{ question }}">{{ question }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Перейти к обработке</button>
             </form>
         </article>
     </main>
 </div>
 </body>
-<script>
-    function showFileName() {
-        const file = document.getElementById("file").files[0];
-        let htmlToInsert = "Загрузить файл";
-        if (file !== undefined) {
-            htmlToInsert = `Файл <b id="filename">${file.name}</b> загружен`;
-        }
-        document.querySelector("label[for='file']").innerHTML = htmlToInsert;
-    }
-</script>
 </html>
