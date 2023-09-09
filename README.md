@@ -30,12 +30,13 @@
     # --> pd.DataFrame
     # --> columns - answers, sentiment, cluster
     ```
+    - пример файла <a href="https://github.com/notdiff/answers_clustering/blob/3c4deda7beb36d72bf0cce8414a9816866023f63/module/test.py#L3">здесь</a>
  ### ✅ 4. <b>Запустить программу:</b>
  
   ```bash
   python имя_созданного_файла.py
   ```
-### Пример результата <a href="">тут</a>
+### Пример результата <a href="https://github.com/notdiff/answers_clustering/blob/3c4deda7beb36d72bf0cce8414a9816866023f63/module/result.csv">тут</a>
     
 
 
