@@ -15,24 +15,21 @@
     </div>
 </header>
 <main>
+    <h1>{{ title }}</h1>
     <div class="chart-container">
-        <div class="chart polar-area-chart">
-            <canvas id="myChart"></canvas>
+        <div class="statistic">
+            <h2>Всего кластеров: {{ group_count }}</h2>
+            <h3>Среднее число элементов в кластере: {{ mean_group_count }}</h3>
+            <h3>Максимальный кластер содержит элементов: {{ max_cluster_count }}</h3>
         </div>
         <div class="chart scatter-chart">
             <canvas id="scatterChart"></canvas>
         </div>
-        <div class="statistic">
-            <h1>Всего кластеров: {{ group_count }}</h1>
-            <h2>Среднее число элементов в кластере: {{ mean_group_count }}</h2>
-            <br>
-            <h2>Максимальный кластер содержит элементов: {{ max_cluster_count }}</h2>
-            <h2>Например</h2>
-            <div class="max-example">
-                {% for element in top_elemnts %}
-                <h3 class="group_title">{{ element }}</h3>
-                {% endfor %}
-            </div>
+        <div class="chart stacked-bar-line-chart">
+            <canvas id="stackedBarLineChart"></canvas>
+        </div>
+        <div class="chart polar-area-chart">
+            <canvas id="myChart"></canvas>
         </div>
     </div>
     </div>
@@ -46,87 +43,131 @@
 
 <script>
     // Polar Area Chart
-    const polarAreaChartData = {
-      labels: JSON.parse('{{ labels | tojson }}'),
-      datasets: [
-        {
-          label: 'results',
-          data: JSON.parse('{{ data | tojson }}'),
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.7)',
-            'rgba(54, 162, 235, 0.7)',
-            'rgba(75, 192, 192, 0.7)',
-          ],
-          hoverBackgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(75, 192, 192)'],
-          hoverOffset: 4,
-        },
-      ],
-    };
+     const polarAreaChartData = {
+       labels: JSON.parse('{{ labels | tojson }}'),
+       datasets: [
+         {
+           label: 'results',
+           data: JSON.parse('{{ data | tojson }}'),
+           backgroundColor: [
+             'rgba(255, 99, 132, 0.7)',
+             'rgba(54, 162, 235, 0.7)',
+             'rgba(75, 192, 192, 0.7)',
+           ],
+           hoverBackgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(75, 192, 192)'],
+           hoverOffset: 4,
+         },
+       ],
+     };
 
-    const ctx = document.getElementById('myChart').getContext('2d');
+     const ctx = document.getElementById('myChart').getContext('2d');
 
-    const config = {
-        type: 'doughnut',
+     const config = {
+         type: 'doughnut',
 
-      data: polarAreaChartData,
-      options: {
-        responsive: true,
-      },
-    };
-    new Chart(ctx, config);
-    function getRandomColor() {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-    // Scatter Chart
-    const scatterChartData = {
-        datasets: [
-                {% for dataset in datasets %}
-                  {
-                    label: '{{ dataset.label }}',
-                    data: {{ dataset.data | tojson }},
-//                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: getRandomColor(),
-                  },
-                {% endfor %}
+       data: polarAreaChartData,
+       options: {
+         responsive: true,
+       },
+     };
+     new Chart(ctx, config);
+     function getRandomColor() {
+         const letters = '0123456789ABCDEF';
+         let color = '#';
+         for (let i = 0; i < 6; i++) {
+             color += letters[Math.floor(Math.random() * 16)];
+         }
+         return color;
+     }
+     // Scatter Chart
+     const scatterChartData = {
+         datasets: [
+                 {% for dataset in datasets %}
+                   {
+                     label: '{{ dataset.label }}',
+                     data: {{ dataset.data | tojson }},
+ //                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                     backgroundColor: getRandomColor(),
+                   },
+                 {% endfor %}
 
-              ],
-    };
+               ],
+     };
 
-    const scatterCtx = document.getElementById('scatterChart').getContext('2d');
+     const scatterCtx = document.getElementById('scatterChart').getContext('2d');
 
-    const scatterConfig = {
-//        type: 'scatter',
-      type: 'bubble',
-      data: scatterChartData,
-      options: {
-          responsive: true,
-          plugins: {
-              legend: {
-                  display: false // Скрыть легенду
-                },
-          tooltip:{
-                  callbacks:{
-                      label:(context)=>{
-                          return context.raw.text;
-                      }
-                  }
-              }
-          }
-      },
-  };
+     const scatterConfig = {
+ //        type: 'scatter',
+       type: 'bubble',
+       data: scatterChartData,
+       options: {
+           responsive: true,
+           plugins: {
+               legend: {
+                   display: false // Скрыть легенду
+                 },
+           tooltip:{
+                   callbacks:{
+                       label:(context)=>{
+                           return `${context.dataset.label}: ${context.raw.text}`;
+                       }
+                   }
+               }
+           }
+       },
+   };
 
-    new Chart(scatterCtx, scatterConfig);
+     new Chart(scatterCtx, scatterConfig);
 
-    // Center the scatter chart
-    const chartContainer = document.getElementsByClassName('chart-container')[0];
-    const scatterChartContainer = document.getElementsByClassName('scatter-chart')[0];
-    scatterChartContainer.style.margin = '0 auto';
+ //    // Center the scatter chart
+ //    const chartContainer = document.getElementsByClassName('chart-container')[0];
+ //    const scatterChartContainer = document.getElementsByClassName('scatter-chart')[0];
+ //    scatterChartContainer.style.margin = '0 auto';
+     // Stacked Bar/Line Chart
+     const stackedBarLineChartData = {
+         labels: {{ cluster_name | tojson }},
+         datasets: [
+             {
+                 label: 'Num elements',
+                 data: {{ cluster_count | tojson }},
+                 backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                 borderColor: 'rgb(255, 99, 132)',
+                 borderWidth: 1,
+                 type: 'bar',
+                 stack: 'combined',
+             },
+             {
+                 label: 'Positives',
+                 data: {{ positive | tojson }},
+                 backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                 borderColor: 'rgb(54, 162, 235)',
+                 borderWidth: 1,
+                 stack: 'combined',
+             },
+         ],
+     };
 
+ const stackedBarLineCtx = document.getElementById('stackedBarLineChart').getContext('2d');
+
+ const stackedBarLineConfig = {
+     type: 'line',
+     data: stackedBarLineChartData,
+     options: {
+         plugins: {
+             title: {
+                 display: true,
+                 text: 'Count clast and positive'
+             }
+         },
+         scales: {
+             y: {
+                 stacked: true
+             }
+         }
+     },
+ };
+
+new Chart(stackedBarLineCtx, stackedBarLineConfig);
 </script>
 </body>
 </html>

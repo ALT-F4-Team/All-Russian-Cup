@@ -13,20 +13,22 @@
     <header>
         <div class="header-box">
             <span id="header-team-name">ALT+F4 Team</span>
-            <img id="header-ico" src="../static/src/ros_atom.png" alt="the icon of the caseholder" />
+            <img id="header-ico" src="../static/src/ros_atom.png" alt="the icon of the caseholder"/>
         </div>
     </header>
     <main>
         <!-- Dropdown menu for selecting a question -->
-        <article class="question-select-box">
+        <article class="upload-form-box">
             <span class="page-name">Выберите вопрос</span>
-            <form action="/processing" method="post" class="question-select-form">
-                <select name="question">
-                    {% for question in questions %}
-                        <option value="{{ question }}">{{ question }}</option>
-                    {% endfor %}
+            <form method="post" class="upload-form" action="/processing">
+                <select id="operator" name="question">
+                    <option value="Опишите одним словом ваше текущее состояние">Опишите одним словом ваше текущее состояние</option>
+                    <option value="{{ questions[1] }}">Напишите свою ассоциацию со словом "бюрократ"</option>
+                    <option value="Что позволяет вам лично поддерживать уверенность и рабочий настрой?">Что позволяет вам лично поддерживать уверенность и рабочий настрой?</option>
+                    <option value="В чём причина стресса, по вашему мнению?">В чём причина стресса, по вашему мнению?</option>
+                    <option value="Вопрос 5. В чем, по Вашему мнению, причина роста травматизма?">Вопрос 5. В чем, по Вашему мнению, причина роста травматизма?</option>
                 </select>
-                <button type="submit">Перейти к обработке</button>
+                <input type="submit" value="Получить результаты">
             </form>
         </article>
     </main>

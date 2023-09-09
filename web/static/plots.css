@@ -1,16 +1,12 @@
 main {
     margin: 0 auto;
-    max-width: 1800px;
-    text-align: center;
+    max-width: 1500px;
+    text-align: left;
 }
 
 .chart-container {
-    display: flex;
-    justify-content: space-around;
-}
-
-.chart {
-    width: 50%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
 .download-form{
@@ -30,12 +26,14 @@ main {
     cursor: pointer;
 }
 
+.statistic {
+    margin: 10%;
+}
+
+
 @media (max-width: 1000px) {
     .chart-container {
-        flex-direction: column;
-    }
-    .chart {
-        width: 100%;
+        grid-template-columns: 1fr;
     }
     .download-form button {
         font-size: 15px;
