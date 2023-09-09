@@ -1,3 +1,5 @@
+import time
+
 from flask import Flask, render_template, request, send_file, redirect, url_for
 import pandas as pd
 import json
@@ -6,6 +8,7 @@ app = Flask(__name__)
 app.secret_key = 'a66ee1919de09f25451412411bed2fb755f845d70f96bf0a'
 
 questions = ["Question 1", "Question 2", "Question 3", "Question 4", "Question 5", "Question 6", "Question 7"]
+
 
 @app.route('/download', methods=['GET', 'POST'])
 def download():
@@ -16,21 +19,21 @@ def download():
     df.to_csv(filename, index=False)
     return send_file(filename, as_attachment=True)
 
-@app.route('/processing', methods=['POST'])
+
+@app.route('/processing', methods=['POST', 'GET'])
 def processing():
     selected_question = request.form['question']
-    # Here, you can add the logic for processing the selected question.
-    # Perform any processing for the selected question here.
-    # You can redirect to the processing page or create it as needed.
+
     return render_template('processing.html', question=selected_question)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        # Handle the POST request from the dropdown menu
         selected_question = request.form.get('question')
         return redirect(url_for('processing', question=selected_question))
     return render_template('index.html', questions=questions)
+
 
 @app.route('/questions/<int:question_id>', methods=['GET', 'POST'])
 def question(question_id):
@@ -40,7 +43,7 @@ def question(question_id):
 
 @app.route('/visualization', methods=['GET', 'POST'])
 def visualization():
-    #question = request.form.get('question', questions[0])  # Get the selected question from the form
+    question = request.form.get('question', questions[0])
 
     df = pd.read_csv('uploads/main_v2.csv')
     df_group = df.groupby('sentiment').count().reset_index()
@@ -74,5 +77,3 @@ def visualization():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
-
-

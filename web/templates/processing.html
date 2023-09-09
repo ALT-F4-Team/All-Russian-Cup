@@ -93,9 +93,8 @@
 
     <script type="text/javascript">
         setTimeout(function() {
-            // Redirect to the "vizualization" page
-         window.location.href = "{{ url_for('visualization') }}";
-        }, 3000);
+         window.location.href = "{{ url_for('visualization', question=question) }}";
+        });
     </script>
 </body>
 </html>
