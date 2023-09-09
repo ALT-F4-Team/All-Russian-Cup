@@ -91,7 +91,7 @@ def visualization():
         label = row['cluster']
         xy_list = row['embeds']
         text_list = row['answers']
-        positive.append(row['sentiment'].count('positive'))
+        positive.append(row['sentiment'].count('neutral'))
         data = []
         for xy in zip(xy_list, text_list):
             x, y = xy[0][0], xy[0][1]

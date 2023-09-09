@@ -23,7 +23,7 @@ main {
     align-items: center;
     width: calc(100% - 40px);
     margin: 0 auto;
-    margin-top: 40%;
+    margin-top: 20%;
 }
 
 .page-name {
