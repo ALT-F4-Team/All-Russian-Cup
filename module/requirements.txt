@@ -1,0 +1,9 @@
+transformers
+umap-learn
+compress-fasttext
+nltk
+pandas
+sklearn
+tqdm
+matplotlib
+torch
