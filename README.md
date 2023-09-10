@@ -59,7 +59,7 @@
     ```python
     from process_dset import process_dset
     
-    process_dset("./название датасета")
+    process_dset("./название датасета.csv")
     # --> pd.DataFrame
     # --> columns - answers, sentiment, cluster
     ```
