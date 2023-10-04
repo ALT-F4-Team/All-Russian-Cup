@@ -38,7 +38,7 @@
 ### 💼 1.  <b>Склонировать репозиторий:</b>
    
    ```bash
-   git clone https://github.com/notdiff/answers_clustering.git
+   git clone https://github.com/ALT-F4-Team/All-Russian-Cup.git
    ```
    ```bash
    cd answers_clustering
